@@ -23,13 +23,6 @@
     @endif
 
 
-    @if($top_2->isNotEmpty())
-    <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-0 px-0 md:px-0 py-6 my-6">
-        @foreach($top_2 as $index => $product)
-            <x-frontend.top_two :product="$product" :rank="$index + 1" />
-        @endforeach
-    </div>
-    @endif
 
 
 

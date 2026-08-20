@@ -5,7 +5,7 @@
 
             <!-- Logo -->
             <a href="{{ route('home') }}" class="text-2xl font-bold">
-                MyStore
+                Xeina Store
             </a>
 
             <!-- Search -->

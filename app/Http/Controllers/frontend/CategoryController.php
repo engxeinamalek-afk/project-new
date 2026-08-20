@@ -15,13 +15,6 @@ class CategoryController extends Controller
      */
     public function index(Category $category,Request $request)
     {
-        $top_2 = Product::with('category')
-            ->select('products.*', DB::raw('SUM(order_items.quantity) as total_sold'))
-            ->join('order_items', 'products.id', '=', 'order_items.product_id')
-            ->groupBy('products.id')
-            ->orderByDesc('total_sold')
-            ->take(2)
-            ->get();
         $query=$category->products();
         $onSale = Product::with('category')
             ->select('products.*', DB::raw('COALESCE(SUM(order_items.quantity), 0) as total_sold'))
@@ -43,7 +36,7 @@ class CategoryController extends Controller
         if ($request->ajax()) {
             return view('user.partials.new_product', compact('new_product'))->render();
         }
-        return view('user.category',compact('category','new_product','onSale','top_2'));
+        return view('user.category',compact('category','new_product','onSale'));
     }
 
     /**
