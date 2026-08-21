@@ -50,7 +50,7 @@ class GuestDataMergeService
             foreach ($favoriteIds as $productId) {
                 $product = Product::find($productId);
                 if (!$product)  continue;
-                Favorite::firstOrCreate(['user_id' => Auth::id(),
+                Favorite::updateOrCreate(['user_id' => Auth::id(),
                         'product_id' => $productId,]    ,   ['updated_at' => now()]);
             }
             $latestIds = Favorite::where('user_id', Auth::id())->latest('updated_at')->take(20)->pluck('id');
