@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use App\Models\Cart;
 use App\Models\cartItems;
+use App\Models\Product;
 use Illuminate\Support\Facades\Cookie;
 
 class AuthenticatedSessionController extends Controller
@@ -38,6 +39,8 @@ class AuthenticatedSessionController extends Controller
                 'user_id' => Auth::id()
             ]);
             foreach ($cookieCart as $productId => $quantity) {
+                $product=Product::find($productId);
+                if(!$product)   continue;
                 $cartItem = cartItems::where('cart_id', $cart->id)
                 ->where('product_id', $productId)
                 ->first();
