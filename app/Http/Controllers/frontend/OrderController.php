@@ -21,7 +21,7 @@ class OrderController extends Controller
     public function index()
     {
         $user_id=Auth::id();
-        $orders=Order::where('user_id',$user_id)->with('items.product')->paginate(10);
+        $orders=Order::where('user_id',$user_id)->with('items.product')->latest()->paginate(10);
         return view('user.orders',compact('orders'));
     }
 
@@ -60,6 +60,8 @@ class OrderController extends Controller
                 orderItem::create(['order_id' => $order->id,
                                 'product_id' => $product->id,
                                 'quantity' => $product->quantity,
+                                'product_name' => $product->name,
+                                'productImage' => $product->image,
                                 'unit_price' => $product->price
                                 ]);
             }

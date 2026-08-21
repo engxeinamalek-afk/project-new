@@ -55,14 +55,15 @@
                     <!-- محتويات الطلب (Order Items) -->
                     <div class="divide-y divide-gray-200">
                         @foreach($order->items as $item)
+                        
                             <div class="p-4 sm:p-6 flex items-center justify-between">
                                 <div class="flex items-center gap-x-6">
                                     <!-- صورة المنتج -->
-                                    <img src="{{ asset('storage/' . $item->product->image) }}" alt="{{ $item->product->name }}" class="w-16 h-16 object-cover rounded-md border border-gray-200 flex-shrink-0">
+                                    <img src="{{ asset('storage/' . $item->productImage) }}" alt="{{ $item->product_name }}" class="w-16 h-16 object-cover rounded-md border border-gray-200 flex-shrink-0">
                                     
                                     <!-- تفاصيل المنتج -->
                                     <div>
-                                        <h4 class="text-sm font-medium text-gray-900">{{ $item->product->name }}</h4>
+                                        <h4 class="text-sm font-medium text-gray-900">{{ $item->product_name }}</h4>
                                         <p class="mt-1 text-sm text-gray-500">Quantity: {{ $item->quantity }}</p>
                                     </div>
                                 </div>
