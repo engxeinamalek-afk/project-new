@@ -45,7 +45,8 @@ class OrderController extends Controller
 
         $products = $this->getProduct();
         if($products->isEmpty()){
-            return ;
+            return response()->json(['success' => false ,
+                                    'message' => "Cart is empty"], 422);
         } 
         $totalPrice = $products->sum(function($product) {
             return $product->price * $product->quantity;
@@ -85,15 +86,22 @@ class OrderController extends Controller
 
     }
 
-    private function getProduct(){
-        if(Auth::check()){
-            $cart=Cart::where('user_id',Auth::id())->first();
-            return Product::join('cart_items','products.id','=','cart_items.product_id')
-                   ->where('cart_items.cart_id','=',$cart->id)
-                   ->orderBy('cart_items.updated_at','desc')
-                   ->select('products.*','cart_items.quantity as quantity')
-                   ->get();
+    private function getProduct()
+    {
+        if (Auth::check()) {
+            $cart = Cart::where('user_id', Auth::id())->first();
+            if (!$cart) {
+                return collect();
+            }
+
+            return Product::join('cart_items', 'products.id', '=', 'cart_items.product_id')
+                ->where('cart_items.cart_id', '=', $cart->id)
+                ->orderBy('cart_items.updated_at', 'desc')
+                ->select('products.*', 'cart_items.quantity as quantity')
+                ->get();
         }
+
+        return collect();
     }
 
     /**
