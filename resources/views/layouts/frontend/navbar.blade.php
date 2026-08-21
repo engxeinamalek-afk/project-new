@@ -40,7 +40,7 @@
                 @auth
                 <a href="{{route('ordersView')}}"
                    class="{{ request()->routeIs('ordersView') ? 'text-blue-600 font-bold' : 'text-black hover:text-blue-500 font-medium' }} transition-colors">
-                    My Order
+                    My Orders
                 </a>
                 @endauth
 

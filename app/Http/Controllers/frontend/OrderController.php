@@ -20,7 +20,9 @@ class OrderController extends Controller
      */
     public function index()
     {
-        return view('user.orders');
+        $user_id=Auth::id();
+        $orders=Order::where('user_id',$user_id)->with('items.product')->paginate(10);
+        return view('user.orders',compact('orders'));
     }
 
     /**
