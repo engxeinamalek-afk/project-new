@@ -69,7 +69,7 @@
                                 
                                 <!-- سعر المنتج في الطلب -->
                                 <div class="text-sm font-medium text-gray-900">
-                                    {{ number_format($item->product->price * $item->quantity, 2) }}$
+                                    {{ number_format($item->unit_price * $item->quantity, 2) }}$
                                 </div>
                             </div>
                         @endforeach

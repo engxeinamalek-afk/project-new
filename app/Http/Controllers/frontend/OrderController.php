@@ -59,7 +59,8 @@ class OrderController extends Controller
             foreach($products as $product){
                 orderItem::create(['order_id' => $order->id,
                                 'product_id' => $product->id,
-                                'quantity' => $product->quantity
+                                'quantity' => $product->quantity,
+                                'unit_price' => $product->price
                                 ]);
             }
             $cart=Cart::where('user_id',Auth::id())->first();

@@ -67,7 +67,7 @@
                                                     <span class="font-medium text-gray-800">{{ $item->product->name ?? 'Product' }}</span>
                                                     <span class="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">Quantity: {{ $item->quantity }}</span>
                                                 </div>
-                                                <span class="font-semibold text-gray-900">{{ number_format(($item->product->price ?? 0) * $item->quantity, 2) }}$</span>
+                                                <span class="font-semibold text-gray-900">{{ number_format(($item->unit_price ?? 0) * $item->quantity, 2) }}$</span>
                                             </li>
                                         @endforeach
                                         <!-- //حاليا رح اتجاهل التكرار بالمنتجات المتشابهة لانو اصلا ما رح يكون في تكرار عند الطلب النظامي  -->
