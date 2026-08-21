@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
@@ -70,11 +71,17 @@ class OrderController extends Controller
             DB::commit();
             return response()->json([ 'success' => true,
                                       'message' => 'Payment completed and order created successfully!']);
-        }catch(Exception $e){
+        }catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(['success' => false,
-                                    'message' => 'Sorry, an error occurred while processing your request:' . $e->getMessage()], 500);
-        }
+            Log::error('Order creation failed', [
+                'user_id' => Auth::id(),
+                'error' => $e->getMessage(),
+            ]);
+            return response()->json([
+                'success' => false,
+                'message' => "Sorry, an error occurred while processing your request"
+            ], 500);
+}
 
     }
 
