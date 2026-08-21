@@ -8,6 +8,9 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use App\Models\Cart;
+use App\Models\cartItems;
+use Illuminate\Support\Facades\Cookie;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -28,6 +31,28 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        $cookieCart = json_decode($request->cookie('cartItems', '[]'),true);
+
+        if (!empty($cookieCart)) {
+            $cart = Cart::firstOrCreate([
+                'user_id' => Auth::id()
+            ]);
+            foreach ($cookieCart as $productId => $quantity) {
+                $cartItem = cartItems::where('cart_id', $cart->id)
+                ->where('product_id', $productId)
+                ->first();
+                if ($cartItem) {
+                    $cartItem->increment('quantity', $quantity);
+                } else {
+                    cartItems::create([
+                        'cart_id' => $cart->id,
+                        'product_id' => $productId,
+                        'quantity' => $quantity,
+                    ]);
+                }       
+            }
+            Cookie::queue(Cookie::forget('cartItems'));
+        }
         if ($request->user()->role === 'admin') {
             return redirect('dashboard');
         }
