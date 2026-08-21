@@ -16,6 +16,10 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
+        $new_product=Product::latest()->paginate(3);
+        if ($request->has('page')){
+            return view('user.partials.new_product', compact('new_product'))->render();
+        }
         $best_sellers = Product::with('category')
             ->select('products.*', DB::raw('SUM(order_items.quantity) as total_sold'))
             ->join('order_items', 'products.id', '=', 'order_items.product_id')
@@ -30,13 +34,9 @@ class HomeController extends Controller
             ->groupBy('products.id')
             ->get();
         $category=Category::where('is_featured','=','1')->first();
-        $new_product=Product::latest()->paginate(3);
         $featured_product=Product::where('is_featured','=','1')->first();
         $viewedProducts=$this->getRecentlyViewedForHome();
         $favoriteProducts=$this->getFavoriteProducts();
-        if ($request->has('page')){
-            return view('user.partials.new_product', compact('new_product'))->render();
-        }
         return view('user.home',compact('featured_product','new_product','best_sellers','onSale','category','viewedProducts','favoriteProducts'));
     }
 
