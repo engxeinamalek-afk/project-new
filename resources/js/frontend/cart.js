@@ -80,7 +80,7 @@ function initCheckout() {
                                 confirmButtonColor: '#2563eb'
                             }).then(() => {
                                 // إعادة توجيه المستخدم لصفحة الفاتورة أو الرئيسية بعد إغلاق الإشعار
-                                window.location.href = '/home'; 
+                                window.location.href = '/'; 
                             });
                         } else {
                             // إظهار رسالة خطأ مخصصة إذا أرجع السيرفر فشلاً منطقياً

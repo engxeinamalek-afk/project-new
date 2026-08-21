@@ -14,7 +14,6 @@ use App\Http\Controllers\frontend\ProductController as frontendProductController
 use App\Http\Controllers\frontend\HomeController;
 
     Route::get('/', [HomeController::class, 'index'])->name('home');
-    Route::get('/home', [HomeController::class, 'index'])->name('home');
     // عرض صفحة تفاصيل منتج
     Route::get('product_details/{product}', [frontendProductController::class, 'viewDetails'])->name('product_details');    
     // تفضيل منتج
@@ -27,8 +26,6 @@ use App\Http\Controllers\frontend\HomeController;
     Route::get('cartView' , [CartController::class, 'index'])->name('cartView');
 
 Route::middleware(['auth','user', 'verified'])->group(function () {
-    //واجهة الصفحة الرئيسية
-    Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::post('order_store', [frontendOrderController::class, 'store'])->name('order_store');
     Route::get('ordersView', [frontendOrderController::class, 'index'])->name('ordersView');
 });
