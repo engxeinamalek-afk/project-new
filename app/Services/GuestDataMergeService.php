@@ -9,15 +9,19 @@ use App\Models\RecentlyViewed;
 use App\Models\Favorite;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 class GuestDataMergeService
 {
     /**
      * Create a new class instance.
      */
     public function merge(Request $request){
-        $this->mergeCart($request);
-        $this->mergeFavorites($request);
-        $this->mergeRecentlyViewed($request);
+        DB::transaction(function() use ($request) {
+            $this->mergeCart($request);
+            $this->mergeFavorites($request);
+            $this->mergeRecentlyViewed($request);
+        });
+
     }
     private function mergeCart(Request $request){
         $cookieCart = json_decode($request->cookie('cartItems', '[]'),true);
@@ -28,6 +32,7 @@ class GuestDataMergeService
             foreach ($cookieCart as $productId => $quantity) {
                 $product=Product::find($productId);
                 if(!$product)   continue;
+                if(!is_numeric($quantity)|| $quantity<=0)   continue;
                 $cartItem = cartItems::where('cart_id', $cart->id)
                 ->where('product_id', $productId)
                 ->first();
