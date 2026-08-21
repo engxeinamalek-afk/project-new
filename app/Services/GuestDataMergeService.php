@@ -21,6 +21,12 @@ class GuestDataMergeService
             $this->mergeFavorites($request);
             $this->mergeRecentlyViewed($request);
         });
+        Cookie::queue(Cookie::forget('favorite_products'));
+        Cookie::queue(Cookie::forget('cartItems'));
+        Cookie::queue(Cookie::forget('recently_viewed_products'));
+
+
+
 
     }
     private function mergeCart(Request $request){
@@ -46,7 +52,6 @@ class GuestDataMergeService
                     ]);
                 }       
             }
-            Cookie::queue(Cookie::forget('cartItems'));
         }
     }
     private function mergeFavorites(Request $request){
@@ -60,7 +65,6 @@ class GuestDataMergeService
             }
             $latestIds = Favorite::where('user_id', Auth::id())->latest('updated_at')->take(20)->pluck('id');
             Favorite::where('user_id', Auth::id())->whereNotIn('id', $latestIds)->delete();
-            Cookie::queue(Cookie::forget('favorite_products'));
         }
     }
     private function mergeRecentlyViewed(Request $request){
@@ -77,11 +81,6 @@ class GuestDataMergeService
                 ->take(20)
                 ->pluck('id');
             RecentlyViewed::where('user_id', Auth::id())->whereNotIn('id', $latestIds)->delete();
-            Cookie::queue(Cookie::forget('recently_viewed_products'));
         }
-    }
-    public function __construct()
-    {
-        //
     }
 }
