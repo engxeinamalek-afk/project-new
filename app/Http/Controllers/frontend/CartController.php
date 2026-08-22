@@ -60,7 +60,7 @@ class CartController extends Controller
      */
     public function store(Request $request , Product $product)
     {
-        $request->validate(['quantity' => 'required|integer|min:1|max:100']);
+        $request->validate(['quantity' => 'required|integer|min:1']);
         if (Auth::check()) {
             $userId = Auth::id();
             $cart = Cart::firstOrCreate([
